@@ -1,0 +1,13 @@
+*.o
+*.exe
+*.bak
+files/
+audio/
+images/
+video/
+history/
+glock17/
+_lint.tmp
+*.zip
+images.out
+display.formats.txt

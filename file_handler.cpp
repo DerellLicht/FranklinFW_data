@@ -1,7 +1,6 @@
 //**********************************************************************************
-//  Copyright (c) 1998-2025 Daniel D. Miller                       
-//  ext_lookup - file extension lookup
-//  This file contains the extension-lookup and vectoring table and function.
+//  Copyright (c) 1998-2026 Daniel D. Miller                       
+//  This file does the actual work on each file
 //**********************************************************************************
 
 #include <windows.h>
@@ -20,10 +19,10 @@
 
 static uint max_filename_len = 0 ;
 //************************************************************************
-//lint -esym(759, print_file_info) header declaration for symbol could be moved from header to module
+//lint -esym(759, analyze_franklin_data) header declaration for symbol could be moved from header to module
 void calc_max_filename_len(ffdata& ftemp)
 {
-   // print_file_info(file);
+   // analyze_franklin_data(file);
    uint flen = ftemp.filename.length();
    if (max_filename_len < flen) {
       max_filename_len = flen ;
@@ -31,8 +30,8 @@ void calc_max_filename_len(ffdata& ftemp)
 }  //lint !e550 !e1764
 
 //************************************************************************
-//lint -esym(759, print_file_info) header declaration for symbol could be moved from header to module
-int print_file_info(ffdata& ftemp)
+//lint -esym(759, analyze_franklin_data) header declaration for symbol could be moved from header to module
+int analyze_franklin_data(ffdata& ftemp)
 {
    ffdata *fptr = &ftemp ;
 

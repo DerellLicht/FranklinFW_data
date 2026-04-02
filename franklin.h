@@ -36,5 +36,5 @@ struct ffdata
 
 //  file_handler.cpp
 void calc_max_filename_len(ffdata& ftemp);
-int print_file_info(ffdata& ftemp);
+int analyze_franklin_data(ffdata& ftemp);
 

@@ -1,6 +1,6 @@
 //**********************************************************************************
-//  Copyright (c) 1998-2025 Derell Licht
-//  media_list.cpp - list info about various media files
+//  Copyright (c) 1998-2026 Derell Licht
+//  franklin.cpp - read all files in target folder
 //**********************************************************************************
 
 #include <windows.h>
@@ -15,14 +15,11 @@
 #include "franklin.h"
 #include "qualify.h"
 
-//lint -esym(1058, print_file_info)
+//lint -esym(1058, analyze_franklin_data)
 
-//  V1.01  Convert to Unicode
-//  V1.02  Add support for SVG files
-//  V1.03  Converted files linked list to vector/unique_ptr
 #define  VER_NUMBER "1.00"
 
-static TCHAR const * const Version = _T("UniFileMgr, Version " VER_NUMBER ) ;   //lint !e707
+static TCHAR const * const Version = _T("FranklinFW data analyzer, Version " VER_NUMBER ) ;   //lint !e707
 
 //  per Jason Hood, this turns off MinGW's command-line expansion, 
 //  so we can handle wildcards like we want to.                    
@@ -122,80 +119,6 @@ int read_files(TCHAR *filespec)
 }
 
 //********************************************************************************
-//  unrelated debug function
-//********************************************************************************
-struct vcolumn_elements_s {
-   ffdata *ftemp {nullptr};
-   uint rows {};
-   uint top_col_idx {};
-};
-#define  MAX_COLUMNS    25
-static vcolumn_elements_s vcolumns[MAX_COLUMNS] ;
-
-static void test_column_counts(void)
-{
-   filecount = 57 ;
-   uint disp_cols = 6 ;
-   uint j ;
-   uint rows = (unsigned) filecount / disp_cols ;
-   uint partrows = (unsigned) filecount % disp_cols ;
-
-   for (j=0; j< disp_cols ; j++) {
-      vcolumns[j].rows = rows ;
-   }
-   for (j=0; j<partrows; j++) {
-      vcolumns[j].rows++ ;
-   }
-
-   //  after partrows causes rows to be incremented for some columns,
-   //  then actual overall value of rows needs to be incremented to reflect this.
-   //  If there were no partrows, then rows is already correct.
-   if (partrows > 0) {
-      rows++ ;
-   }
-   
-   //  new method: store top-of-column index
-   vcolumns[0].top_col_idx = 0 ;
-   for (j=1; j< disp_cols ; j++) {
-      vcolumns[j].top_col_idx = vcolumns[j-1].top_col_idx + vcolumns[j-1].rows;
-   }
-      
-   for (j=0; j< disp_cols ; j++) {
-      console->dputsf(L"%u: top: %2u, rows: %2u\n", j,
-         vcolumns[j].top_col_idx, vcolumns[j].rows);
-   }
-   console->dputsf(L"\n");
-   
-   //  next, print out file indices
-   j = 0 ;
-   uint idxFile ;
-   uint fcount = 0 ;
-   unsigned row_num = 0 ;
-   console->dputsf(L"\nrow %u:  ", row_num);
-   while (LOOP_FOREVER) {
-      if (fcount < filecount) {
-         // lfn_fprint[columns](vcolumns[j].ftemp) ; //  vertical listing  NOLINT
-         // vcolumns[j].top_col_idx, vcolumns[j].rows);
-         idxFile = vcolumns[j].top_col_idx + row_num ;
-         console->dputsf(L"%u  ", idxFile);
-         
-      }
-
-      //  draw separator characters as required
-      fcount++ ;
-      if (++j == disp_cols) {
-         if (--rows == 0)
-            break;
-         j = 0 ;
-         row_num++ ;
-         console->dputsf(L"\nrow %u:  ", row_num);
-         // ncrlf() ;
-      } 
-   }  //  loop forever
-   
-}
-
-//********************************************************************************
 //  this solution is from:
 //  https://github.com/coderforlife/mingw-unicode-main/
 //********************************************************************************
@@ -267,12 +190,12 @@ int wmain(int argc, wchar_t *argv[])
       file_spec = argv[1] ;
    }
    else {
-      console->dputsf(_T("Usage: uni_file_mgr [file_path]\n"));
+      console->dputsf(_T("Usage: franklin [file_path]\n"));
       console->dputsf(_T("If file_path is not specified, current folder will be used\n"));
       return 1 ;
    }
 
-   console->dclrscr();
+   // console->dclrscr();
    // console->dputsf(L"pre:  %s\n", file_spec);
    result = qualify(file_spec) ;
    if (result == QUAL_INV_DRIVE) {
@@ -300,7 +223,7 @@ int wmain(int argc, wchar_t *argv[])
       return (-result);
    }
    
-   console->dputsf(_T("filespec: %s, fcount: %u\n"), file_spec.c_str(), filecount);
+   // console->dputsf(_T("filespec: %s, fcount: %u\n"), file_spec.c_str(), filecount);
    if (filecount > 0) {
       //  find max filename length
       for(auto &file : flist)
@@ -311,14 +234,11 @@ int wmain(int argc, wchar_t *argv[])
       
       for(auto &file : flist)
       {
-         print_file_info(file);
+         analyze_franklin_data(file);
       }
    }  //lint !e681 !e42 !e529
    console->dputsf(L"\n");
    
-   //  other random debug stuff
-   test_column_counts();
-      
    // restore_console_attribs(); //  we don't have to do this any more!!
    return 0;
 }

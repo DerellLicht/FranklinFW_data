@@ -15,7 +15,7 @@
 #include "franklin.h"
 #include "qualify.h"
 
-//lint -esym(1058, analyze_franklin_data)
+//lint -esym(1058, parse_data_files)
 
 #define  VER_NUMBER "1.00"
 
@@ -115,6 +115,7 @@ int read_files(TCHAR *filespec)
    }
 
    FindClose (handle);
+   
    return 0;
 }
 
@@ -233,9 +234,10 @@ int wmain(int argc, wchar_t *argv[])
       
       for(auto &file : flist)
       {
-         analyze_franklin_data(file);
+         parse_data_files(file);
       }
    }  //lint !e681 !e42 !e529
+   console->dputsf(L"list size: %u\n", get_data_list_size());
    console->dputsf(L"\n");
    
    // restore_console_attribs(); //  we don't have to do this any more!!

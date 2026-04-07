@@ -48,10 +48,17 @@ struct Franklin_data {
 std::vector<Franklin_data> fdlist ;
 
 //************************************************************************
-//lint -esym(759, analyze_franklin_data) header declaration for symbol could be moved from header to module
+uint get_data_list_size(void)
+{
+   // console->dputsf(L"list size: %u\n", fdlist.size());
+   return (uint) fdlist.size();
+}
+
+//************************************************************************
+//lint -esym(759, parse_data_files) header declaration for symbol could be moved from header to module
 void calc_max_filename_len(ffdata& ftemp)
 {
-   // analyze_franklin_data(file);
+   // parse_data_files(file);
    uint flen = ftemp.filename.length();
    if (max_filename_len < flen) {
       max_filename_len = flen ;
@@ -112,8 +119,7 @@ static wchar_t *process_date_string(wchar_t *hd)
 }
 
 //************************************************************************
-//lint -esym(759, analyze_franklin_data) header declaration for symbol could be moved from header to module
-int analyze_franklin_data(ffdata& ftemp)
+int parse_data_files(ffdata& ftemp)
 {
    ffdata *fptr = &ftemp ;
 
@@ -248,22 +254,14 @@ int analyze_franklin_data(ffdata& ftemp)
             case 8: // 8 V2L (kWh)
                fdtemp->kWh_v2l = (float) wcstod(hd, NULL);
                // console->dputsf(L"Solar production: %.1f\n\n", fdtemp->kWh_solar);
-               // tl = wcschr(hd, L',');  //  second comma is desired terminator
-               // if (tl == NULL)  goto error_exit;
-               // hd = tl + 1;  //  point head to next data element
                break ;
 
             default:
-               console->dputsf(L"%s: H%4.1f S%4.1f BC%4.1f BD%4.1f GI%4.1f GE%4.1f Gen%4.1f v2l%4.1f\n", 
-                  fdtemp->date_str.c_str(),
-                  fdtemp->kWh_home,
-                  fdtemp->kWh_solar,
-                  fdtemp->kWh_battery_charge,
-                  fdtemp->kWh_battery_discharge,
-                  fdtemp->kWh_grid_import,
-                  fdtemp->kWh_grid_export,
-                  fdtemp->kWh_generator,
-                  fdtemp->kWh_v2l);
+               // console->dputsf(L"%s: H%4.1f S%4.1f BC%4.1f BD%4.1f GI%4.1f GE%4.1f Gen%4.1f v2l%4.1f\n", 
+               //    fdtemp->date_str.c_str(),
+               //    fdtemp->kWh_home, fdtemp->kWh_solar, fdtemp->kWh_battery_charge,
+               //    fdtemp->kWh_battery_discharge, fdtemp->kWh_grid_import, 
+               //    fdtemp->kWh_grid_export, fdtemp->kWh_generator, fdtemp->kWh_v2l);
                done = true ;
                break ;            
             }  //  end switch()

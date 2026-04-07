@@ -282,9 +282,47 @@ void list_data_elements(void)
    {
       console->dputsf(L"%s: H%4.1f S%4.1f BC%4.1f BD%4.1f GI%4.1f GE%4.1f Gen%4.1f v2l%4.1f\n", 
          fdtemp.date_str.c_str(),
-         fdtemp.kWh_home, fdtemp.kWh_solar, fdtemp.kWh_battery_charge,
-         fdtemp.kWh_battery_discharge, fdtemp.kWh_grid_import, 
-         fdtemp.kWh_grid_export, fdtemp.kWh_generator, fdtemp.kWh_v2l);
+         fdtemp.kWh_home, fdtemp.kWh_solar, fdtemp.kWh_battery_charge, fdtemp.kWh_battery_discharge, 
+         fdtemp.kWh_grid_import, fdtemp.kWh_grid_export, 
+         fdtemp.kWh_generator, fdtemp.kWh_v2l);
    }
 }
 
+//************************************************************************
+void list_grid_IO_by_month(void)
+{
+   console->dputsf(L"show grid import/export by month\n");
+   console->dputsf(L"list size: %u\n\n", get_data_list_size());
+   
+   uint curr_year = 0 ;
+   uint curr_month = 0 ;
+   float grid_import_total = 0.0 ;
+   
+   for(auto &fdtemp : fdlist) {
+      uint ymd = _wtoi(fdtemp.date_str.c_str());
+      uint ym = ymd / 100 ;
+      uint month = ym % 100 ;
+      uint year  = ym / 100 ;
+      if (curr_year == 0) {
+         curr_year = year ;
+         curr_month = month ;
+         grid_import_total = 0.0 ;
+         // console->dputsf(L"starting ym: %2u %4u\n\n", month, year);
+      }
+      else if (curr_year != year  ||  curr_month != month) {
+         console->dputsf(L"month: %2u/%4u  %7.1f\n", curr_month, curr_year, grid_import_total);
+         curr_year = year ;
+         curr_month = month ;
+         grid_import_total = 0.0 ;
+      }
+      
+      //  update the import/export total
+      // grid_import_total += (fdtemp.kWh_grid_import - fdtemp.kWh_grid_export) ;
+      grid_import_total += fdtemp.kWh_grid_import ;
+      grid_import_total -= fdtemp.kWh_grid_export ;
+      // console->dputsf(L"git: %.1f, ginp: %.1f, gexp: %.1f\n", 
+      //    grid_import_total, fdtemp.kWh_grid_import, fdtemp.kWh_grid_export) ;
+   }
+   //  pick up last record
+   console->dputsf(L"month: %2u/%4u  %7.1f\n\n", curr_month, curr_year, grid_import_total);
+}

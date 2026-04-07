@@ -160,12 +160,28 @@ int main()
 #endif //defined(__GNUC__) && defined(_UNICODE)
 
 //********************************************************************************
+//lint -esym(745, usage)  function has no explicit type or class, int assumed
+//lint -esym(533, usage)  function should return a value (see line 163)
+static void usage(void)
+{
+   console->dputsf(L"\n");
+   console->dputsf(L"Usage: franklin [-options] [file_path]\n");
+   console->dputsf(L"If file_path is not specified, current folder will be used\n");
+   console->dputsf(L"options:\n");
+   console->dputsf(L"  -l - list data elements [default]\n");
+   console->dputsf(L"  -g - show grid import/export totals by month\n");
+}
+
+//********************************************************************************
 // static TCHAR file_spec[MAX_FILE_LEN+1] = _T("") ;
 static std::wstring file_spec(L"");
 
 int wmain(int argc, wchar_t *argv[])
 {
    int result ;
+   
+   uint options = 0 ;   // 0 = list data elements [default]
+                        // 1 = show grid import/export totals by month
    
    console = std::make_unique<conio_min>() ;
    if (!console->init_okay()) {  //lint !e530
@@ -184,18 +200,34 @@ int wmain(int argc, wchar_t *argv[])
    // > medialist glock17\\"буяновский страйкбол"
    // filespec: D:\SourceCode\Git\media_list\glock17\буяновский страйкбол\*, fcount: 3
    
-   if (argc == 1) {
+   int idx ;
+   for (idx=1; idx<argc; idx++) {
+      wchar_t *p = argv[idx];
+      if (*p == '-') {
+         p++ ;
+         switch(*p) {
+         case 'l':
+            options = 0 ;
+            break ;  
+            
+         case 'g':
+            options = 1 ;
+            break ;  
+         
+         default:
+            usage();
+            return 1 ;
+         }
+      }
+      else {
+         file_spec = argv[1] ;
+      }
+   }
+   
+   if (file_spec.empty()) {
       file_spec = L"." ;
    }
-   else if (argc == 2) {
-      file_spec = argv[1] ;
-   }
-   else {
-      console->dputsf(_T("Usage: franklin [file_path]\n"));
-      console->dputsf(_T("If file_path is not specified, current folder will be used\n"));
-      return 1 ;
-   }
-
+   
    // console->dclrscr();
    // console->dputsf(L"pre:  %s\n", file_spec);
    result = qualify(file_spec) ;
@@ -234,11 +266,24 @@ int wmain(int argc, wchar_t *argv[])
       
       for(auto &file : flist)
       {
-         parse_data_files(file);
+         result = parse_data_files(file);
+         if (result != 0) {
+            usage();
+            return 1 ;
+         }
       }
    }  //lint !e681 !e42 !e529
-   
-   list_data_elements();
+
+   switch (options) {
+   case 1:
+      list_grid_IO_by_month();
+      break ;
+
+   case 0:
+   default:
+      list_data_elements();
+      break ;
+   }
    
    // restore_console_attribs(); //  we don't have to do this any more!!
    return 0;

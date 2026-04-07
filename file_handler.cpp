@@ -48,6 +48,7 @@ struct Franklin_data {
 std::vector<Franklin_data> fdlist ;
 
 //************************************************************************
+//lint -esym(759, get_data_list_size)  header declaration could be moved from header to module
 uint get_data_list_size(void)
 {
    // console->dputsf(L"list size: %u\n", fdlist.size());
@@ -130,8 +131,7 @@ int parse_data_files(ffdata& ftemp)
    }
    std::wstring filepath = base_path + fptr->filename;
    
-   // console->dputsf(L"%s\n", fptr->filename.c_str());
-   console->dputsf(L"%s\n", filepath.c_str());
+   // console->dputsf(L"%s\n", filepath.c_str());
    
    FILE *infd = _wfopen(filepath.c_str(), L"rt");
    if (infd == NULL) {
@@ -257,11 +257,6 @@ int parse_data_files(ffdata& ftemp)
                break ;
 
             default:
-               // console->dputsf(L"%s: H%4.1f S%4.1f BC%4.1f BD%4.1f GI%4.1f GE%4.1f Gen%4.1f v2l%4.1f\n", 
-               //    fdtemp->date_str.c_str(),
-               //    fdtemp->kWh_home, fdtemp->kWh_solar, fdtemp->kWh_battery_charge,
-               //    fdtemp->kWh_battery_discharge, fdtemp->kWh_grid_import, 
-               //    fdtemp->kWh_grid_export, fdtemp->kWh_generator, fdtemp->kWh_v2l);
                done = true ;
                break ;            
             }  //  end switch()
@@ -277,3 +272,19 @@ error_exit:
    console->dputsf(L"%s: line %u  Something went wrong\n", fptr->filename.c_str(), lcount);
    return 1 ;   
 }  //lint !e550
+
+//************************************************************************
+void list_data_elements(void)
+{
+   console->dputsf(L"list size: %u\n\n", get_data_list_size());
+   
+   for(auto &fdtemp : fdlist)
+   {
+      console->dputsf(L"%s: H%4.1f S%4.1f BC%4.1f BD%4.1f GI%4.1f GE%4.1f Gen%4.1f v2l%4.1f\n", 
+         fdtemp.date_str.c_str(),
+         fdtemp.kWh_home, fdtemp.kWh_solar, fdtemp.kWh_battery_charge,
+         fdtemp.kWh_battery_discharge, fdtemp.kWh_grid_import, 
+         fdtemp.kWh_grid_export, fdtemp.kWh_generator, fdtemp.kWh_v2l);
+   }
+}
+

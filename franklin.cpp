@@ -215,6 +215,7 @@ int wmain(int argc, wchar_t *argv[])
       *strptr = 0 ;  //  strip off filename
    }
    base_len = _tcslen(base_path) ;
+   console->dputsf(_T("base path: %s\n"), base_path);
    // printf("base path: %s\n", base_path);
 
    result = read_files((TCHAR *)file_spec.c_str());
@@ -230,7 +231,6 @@ int wmain(int argc, wchar_t *argv[])
       {
          calc_max_filename_len(file);
       }
-      console->dputsf(L"\n"); //lint !e681  Loop is not entered
       
       for(auto &file : flist)
       {

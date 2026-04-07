@@ -1,6 +1,6 @@
 //**********************************************************************************
-//  Copyright (c) 2025 Derell Licht
-//  media_list.cpp - list info about various media files
+//  Copyright (c) 2026 Derell Licht
+//  franklin.h - public declarations for program
 //**********************************************************************************
 
 //lint -esym(552, base_len, base_path)

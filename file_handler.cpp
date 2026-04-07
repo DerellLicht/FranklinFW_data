@@ -1,12 +1,13 @@
 //**********************************************************************************
-//  Copyright (c) 1998-2026 Daniel D. Miller                       
+//  Copyright (c) 2026 Daniel D. Miller                       
 //  This file does the actual work on each file
 //**********************************************************************************
 
 #include <windows.h>
 #include <string>
 #include <memory>
-#include <wchar.h>
+#include <vector>
+// #include <wchar.h>
 #ifdef USE_64BIT
 #include <fileapi.h>
 #endif
@@ -17,7 +18,35 @@
 #endif
 #include "franklin.h"
 
+//lint -esym(601, Franklin_data::wstring) No explicit type for symbol
+
 static uint max_filename_len = 0 ;
+
+//  read label line
+// 0 Date,
+// 1 Home (kWh),
+// 2 Solar (kWh),
+// 3 aPower(s) Charge (kWh),
+// 4 aPower(s) Discharge (kWh),
+// 5 Grid Import (kWh),
+// 6 Grid Export (kWh),
+// 7 Generator (kWh),
+// 8 V2L (kWh)
+struct Franklin_data {
+    std::wstring date_str {};
+    float kWh_home {};
+    float kWh_solar {};
+    float kWh_battery_charge {};
+    float kWh_battery_discharge {};
+    float kWh_grid_import {};
+    float kWh_grid_export {};
+    float kWh_generator {};
+    float kWh_v2l {};
+} ;
+
+
+std::vector<Franklin_data> fdlist ;
+
 //************************************************************************
 //lint -esym(759, analyze_franklin_data) header declaration for symbol could be moved from header to module
 void calc_max_filename_len(ffdata& ftemp)
@@ -45,12 +74,12 @@ static wchar_t const month_str[13][4] = {
    L"Dec",
 L"" } ;
 
-static uint parse_month(wchar_t *hd)
+static uint parse_month(wchar_t const * const hd)
 {
    uint mnum ;
    // console->dputsf(L"%s, seek month\n", hd);
    for (mnum=0; month_str[mnum] != 0; mnum++) {
-      if (wcscmp(hd, month_str[mnum]) == 0) {
+      if (wcsncmp(hd, month_str[mnum], 3) == 0) {
          return mnum + 1;
       }
    }
@@ -60,28 +89,26 @@ static uint parse_month(wchar_t *hd)
 //************************************************************************
 //"Mar 23, 2026",16.3,20.6,0.0,0.0,9.2,13.4,0.0,0.0
 //  return YYYYMMDD
-//  return 0 on error
-static uint process_date_string(wchar_t *hd)
+//  return NULL on error
+static wchar_t *process_date_string(wchar_t *hd)
 {
-   uint pds_data = 0;
-   // if (*hd != L'"') {
-   //    console->dputsf(L"%s, fail test 1\n", hd);
-   //    return 0 ;
-   // }
-   // hd++ ;
-   wchar_t *tl = wcschr(hd, L' ');
-   if (*tl == NULL) {
-      console->dputsf(L"%s, fail test 2\n", hd);
-      return 0 ;
-   }
-   *tl++ = 0 ;  //  NULL-terminate month
+   static wchar_t date_str[9] = L"" ;
    uint month = parse_month(hd);
-   if (*tl == NULL) {
-      console->dputsf(L"%s, fail test 3 (parse month)\n", hd);
-      return 0 ;
+   if (month == 0) {
+      return NULL ;
    }
-   pds_data = month ;
-   return pds_data ;
+   // console->dputsf(L"date parse (month): %s, %u\n", hd, month);
+   
+   hd = next_field(hd);
+   uint day = (uint) _wtoi(hd);
+   // console->dputsf(L"date parse (day): %s, %u\n", hd, day);
+   
+   hd = next_field(hd);
+   uint year = (uint) _wtoi(hd);
+   // console->dputsf(L"date parse (year): %s, %u\n", hd, year);
+   swprintf(date_str, L"%04u%02u%02u", year, month, day);
+   
+   return date_str ;
 }
 
 //************************************************************************
@@ -95,27 +122,6 @@ int analyze_franklin_data(ffdata& ftemp)
       // console->dputsf(L"[%s]\n", fptr->filename.c_str());
       return 1 ;
    }
-   //  display file entry
-   
-   // // console->dputsf(L"%-*s ", max_filename_len, fptr->filename.c_str());
-   // // console->dputsf(L"|%14s\n", convert_to_commas(fptr->fsize, NULL));
-   // size_t ext_dot = fptr->filename.find_last_of(L".");
-   // // if (ext_dot == std::wstring::npos) {
-   // //    console->dputsf(L"%d: %s: %s\n", ext_dot, fptr->filename.c_str(), get_system_message());
-   // // }
-   // // else 
-   // //  if ext_dot == npos (i.e. -1), then no extension is present
-   // //  if ext_dot == 0, then dot is at start of string, treat as no extension
-   // if (ext_dot == 0  ||  ext_dot == std::wstring::npos) {
-   //    fptr->name = fptr->filename;
-   //    fptr->ext = {};
-   // }
-   // else {
-   //    fptr->name = fptr->filename.substr(0, ext_dot);
-   //    fptr->ext  = fptr->filename.substr(ext_dot);
-   // }
-   // console->dputsf(L"%d: %s: [%s][%s], %u\n", 
-   //    ext_dot, fptr->filename.c_str(), fptr->name.c_str(), fptr->ext.c_str(), fptr->fsize);
    std::wstring filepath = base_path + fptr->filename;
    
    // console->dputsf(L"%s\n", fptr->filename.c_str());
@@ -149,47 +155,115 @@ int analyze_franklin_data(ffdata& ftemp)
          uint field_idx = 0 ;
          wchar_t *hd = inpstr ;
          wchar_t *tl ;
+         wchar_t *date_str = NULL ;
+         
+         fdlist.emplace_back();
+         uint idx = fdlist.size() - 1 ;
+         Franklin_data *fdtemp = &fdlist[idx] ;
+         // filecount++;
+         
          bool done = false ;
          while (!done) {
             switch (field_idx) {
             case 0: // 0 Date, convert to YYYYMMDD format
                tl = wcschr(hd, L',');  //  first comma is inside date string; ignore this
                if (tl == NULL)  goto error_exit;
+               tl++ ;   //  skip first comma
                tl = wcschr(tl, L',');  //  second comma is desired terminator
                if (tl == NULL)  goto error_exit;
                
                // clip the date string and process it
-               *tl = 0 ;
+               // *tl++ = 0 ;
                hd++ ;   //  skip the opening quote
                
                //  process date string
-               {
-               uint udate = process_date_string(hd);
-               console->dputsf(L"date parse: %s, %u\n", hd, udate);
-               if (udate == 0) {
+               date_str = process_date_string(hd);
+               if (date_str == NULL) {
                   done = true ;
+                  break ;
                }
-               }
+               fdtemp->date_str = date_str ;
+               // console->dputsf(L"date parse: %s\n", fdtemp->date_str.c_str());
+               // console->dputsf(L"tail: %s", tl);
                
-               hd = tl + 1 ;  //  point head to next data element
+               hd = tl + 1;  //  point head to next data element
                break ;
+               
             case 1: // 1 Home (kWh),
+               fdtemp->kWh_home = (float) wcstod(hd, NULL);
+               // console->dputsf(L"daily consumption: %.1f\n", fdtemp->kWh_home);
+               tl = wcschr(hd, L',');  //  second comma is desired terminator
+               if (tl == NULL)  goto error_exit;
+               hd = tl + 1;  //  point head to next data element
                break ;
+
             case 2: // 2 Solar (kWh),
+               fdtemp->kWh_solar = (float) wcstod(hd, NULL);
+               // console->dputsf(L"Solar production: %.1f\n\n", fdtemp->kWh_solar);
+               tl = wcschr(hd, L',');  //  second comma is desired terminator
+               if (tl == NULL)  goto error_exit;
+               hd = tl + 1;  //  point head to next data element
                break ;
+
             case 3: // 3 aPower(s) Charge (kWh),
+               fdtemp->kWh_battery_charge = (float) wcstod(hd, NULL);
+               // console->dputsf(L"Solar production: %.1f\n\n", fdtemp->kWh_solar);
+               tl = wcschr(hd, L',');  //  second comma is desired terminator
+               if (tl == NULL)  goto error_exit;
+               hd = tl + 1;  //  point head to next data element
                break ;
+
             case 4: // 4 aPower(s) Discharge (kWh),
+               fdtemp->kWh_battery_discharge = (float) wcstod(hd, NULL);
+               // console->dputsf(L"Solar production: %.1f\n\n", fdtemp->kWh_solar);
+               tl = wcschr(hd, L',');  //  second comma is desired terminator
+               if (tl == NULL)  goto error_exit;
+               hd = tl + 1;  //  point head to next data element
                break ;
+
             case 5: // 5 Grid Import (kWh),
+               fdtemp->kWh_grid_import = (float) wcstod(hd, NULL);
+               // console->dputsf(L"Solar production: %.1f\n\n", fdtemp->kWh_solar);
+               tl = wcschr(hd, L',');  //  second comma is desired terminator
+               if (tl == NULL)  goto error_exit;
+               hd = tl + 1;  //  point head to next data element
                break ;
+
             case 6: // 6 Grid Export (kWh),
+               fdtemp->kWh_grid_export = (float) wcstod(hd, NULL);
+               // console->dputsf(L"Solar production: %.1f\n\n", fdtemp->kWh_solar);
+               tl = wcschr(hd, L',');  //  second comma is desired terminator
+               if (tl == NULL)  goto error_exit;
+               hd = tl + 1;  //  point head to next data element
                break ;
+
             case 7: // 7 Generator (kWh),
+               fdtemp->kWh_generator = (float) wcstod(hd, NULL);
+               // console->dputsf(L"Solar production: %.1f\n\n", fdtemp->kWh_solar);
+               tl = wcschr(hd, L',');  //  second comma is desired terminator
+               if (tl == NULL)  goto error_exit;
+               hd = tl + 1;  //  point head to next data element
                break ;
+
             case 8: // 8 V2L (kWh)
+               fdtemp->kWh_v2l = (float) wcstod(hd, NULL);
+               // console->dputsf(L"Solar production: %.1f\n\n", fdtemp->kWh_solar);
+               // tl = wcschr(hd, L',');  //  second comma is desired terminator
+               // if (tl == NULL)  goto error_exit;
+               // hd = tl + 1;  //  point head to next data element
                break ;
+
             default:
+               console->dputsf(L"%s: H%4.1f S%4.1f BC%4.1f BD%4.1f GI%4.1f GE%4.1f Gen%4.1f v2l%4.1f\n", 
+                  fdtemp->date_str.c_str(),
+                  fdtemp->kWh_home,
+                  fdtemp->kWh_solar,
+                  fdtemp->kWh_battery_charge,
+                  fdtemp->kWh_battery_discharge,
+                  fdtemp->kWh_grid_import,
+                  fdtemp->kWh_grid_export,
+                  fdtemp->kWh_generator,
+                  fdtemp->kWh_v2l);
                done = true ;
                break ;            
             }  //  end switch()

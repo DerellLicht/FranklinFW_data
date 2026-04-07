@@ -215,8 +215,7 @@ int wmain(int argc, wchar_t *argv[])
       *strptr = 0 ;  //  strip off filename
    }
    base_len = _tcslen(base_path) ;
-   console->dputsf(_T("base path: %s\n"), base_path);
-   // printf("base path: %s\n", base_path);
+   // console->dputsf(_T("base path: %s\n"), base_path);
 
    result = read_files((TCHAR *)file_spec.c_str());
    if (result < 0) {
@@ -224,7 +223,7 @@ int wmain(int argc, wchar_t *argv[])
       return (-result);
    }
    
-   // console->dputsf(_T("filespec: %s, fcount: %u\n"), file_spec.c_str(), filecount);
+   // franklin data\data*-week.csv
    if (filecount > 0) {
       //  find max filename length
       for(auto &file : flist)

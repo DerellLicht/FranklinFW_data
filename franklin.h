@@ -22,8 +22,7 @@ extern std::unique_ptr<conio_min> console ;
 // able to leave some members uninitialized.
 //lint -esym(768, ffdata::attrib)  global struct member not referenced
 
-struct ffdata 
-{
+struct ffdata {
     DWORD attrib {};
     FILETIME ft {};
     ULONGLONG fsize {};

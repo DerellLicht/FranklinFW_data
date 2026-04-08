@@ -276,7 +276,7 @@ error_exit:
 //************************************************************************
 void list_data_elements(void)
 {
-   console->dputsf(L"list size: %u\n\n", get_data_list_size());
+   console->dputsf(L"number of data elements: %u\n\n", get_data_list_size());
    
    for(auto &fdtemp : fdlist)
    {
@@ -292,7 +292,7 @@ void list_data_elements(void)
 void list_grid_IO_by_month(void)
 {
    console->dputsf(L"show grid import/export by month\n");
-   console->dputsf(L"list size: %u\n\n", get_data_list_size());
+   console->dputsf(L"number of data elements: %u\n\n", get_data_list_size());
    
    uint curr_year = 0 ;
    uint curr_month = 0 ;

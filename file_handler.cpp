@@ -288,6 +288,8 @@ void list_data_elements(void)
 }
 
 //************************************************************************
+// franklin data\*week.csv -g
+//************************************************************************
 void list_grid_IO_by_month(void)
 {
    console->dputsf(L"show grid import/export by month\n");

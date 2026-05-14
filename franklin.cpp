@@ -259,6 +259,7 @@ int wmain(int argc, wchar_t *argv[])
    // franklin data\data*-week.csv
    if (filecount > 0) {
       //  find max filename length
+      //  This is used in formatting console output messages in tables
       for(auto &file : flist)
       {
          calc_max_filename_len(file);

@@ -298,7 +298,8 @@ void list_grid_IO_by_month(void)
    
    uint curr_year = 0 ;
    uint curr_month = 0 ;
-   float grid_import_total = 0.0 ;
+   double grid_import_total = 0.0 ;
+   double overall_total = 0.0 ;
    
    for(auto &fdtemp : fdlist) {
       uint ymd   = _wtoi(fdtemp.date_str.c_str());
@@ -314,6 +315,7 @@ void list_grid_IO_by_month(void)
       }
       else if (curr_year != year  ||  curr_month != month) {
          console->dputsf(L"month: %2u/%4u  %7.1f\n", curr_month, curr_year, grid_import_total);
+         overall_total += grid_import_total ;
          curr_year = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
@@ -325,7 +327,10 @@ void list_grid_IO_by_month(void)
       grid_import_total -= fdtemp.kWh_grid_export ;
       // console->dputsf(L"git: %.1f, ginp: %.1f, gexp: %.1f\n", 
       //    grid_import_total, fdtemp.kWh_grid_import, fdtemp.kWh_grid_export) ;
-   }
+   }  //  for each 
    //  pick up last record
    console->dputsf(L"month: %2u/%4u  %7.1f\n\n", curr_month, curr_year, grid_import_total);
+         overall_total += grid_import_total ;
+   console->dputsf(L"======          =======\n");
+   console->dputsf(L"total:          %7.1f\n\n", overall_total);
 }

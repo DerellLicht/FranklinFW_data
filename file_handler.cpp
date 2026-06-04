@@ -291,6 +291,18 @@ void list_data_elements(void)
 //************************************************************************
 // franklin data\*week.csv -g
 //************************************************************************
+//lint -esym(728, yearly_totals)  Symbol not explicitly initialized
+//lint -esym(843, year_idx)  Variable could be declared as const
+//lint -esym(551, MAX_YEARS)  Symbol not accessed
+
+static uint const MAX_YEARS = 20 ;
+struct yearly_totals_s {
+uint year ;
+double yearly_total ;   
+} ;
+static yearly_totals_s yearly_totals[MAX_YEARS] ;
+static uint year_idx = 0 ;
+
 void list_grid_IO_by_month(void)
 {
    console->dputsf(L"show grid import/export by month\n");
@@ -307,15 +319,32 @@ void list_grid_IO_by_month(void)
       uint ym    = ymd / 100 ;
       uint month = ym % 100 ;
       uint year  = ym / 100 ;
+      //  handle very first element
       if (curr_year == 0) {
          curr_year = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
+         yearly_totals[year_idx].year = curr_year ;
+         yearly_totals[year_idx].yearly_total = 0.0 ;
          // console->dputsf(L"starting ym: %2u %4u\n\n", month, year);
       }
-      else if (curr_year != year  ||  curr_month != month) {
-         console->dputsf(L"month: %2u/%4u  %7.1f\n", curr_month, curr_year, grid_import_total);
+      //  if year changed, update annual totals
+      //  We can assume that if year changes, month changes as well
+      else if (curr_year != year) {
+         console->dputsf(L"month: %2u/%4u     %7.1f\n", curr_month, curr_year, grid_import_total);
+         yearly_totals[year_idx].yearly_total = grid_import_total ;
+         year_idx++ ;
          overall_total += grid_import_total ;
+         curr_year = year ;
+         curr_month = month ;
+         grid_import_total = 0.0 ;
+         yearly_totals[year_idx].year = curr_year ;
+         yearly_totals[year_idx].yearly_total = 0.0 ;
+      }
+      else if (curr_month != month) {
+         console->dputsf(L"month: %2u/%4u     %7.1f\n", curr_month, curr_year, grid_import_total);
+         overall_total += grid_import_total ;
+         yearly_totals[year_idx].yearly_total += grid_import_total ;
          curr_year = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
@@ -327,10 +356,18 @@ void list_grid_IO_by_month(void)
       grid_import_total -= fdtemp.kWh_grid_export ;
       // console->dputsf(L"git: %.1f, ginp: %.1f, gexp: %.1f\n", 
       //    grid_import_total, fdtemp.kWh_grid_import, fdtemp.kWh_grid_export) ;
-   }  //  for each 
+   }  //  for each daily log entry
+   
    //  pick up last record
-   console->dputsf(L"month: %2u/%4u  %7.1f\n\n", curr_month, curr_year, grid_import_total);
-         overall_total += grid_import_total ;
-   console->dputsf(L"======          =======\n");
-   console->dputsf(L"total:          %7.1f\n\n", overall_total);
+   console->dputsf(L"month: %2u/%4u     %7.1f\n\n", curr_month, curr_year, grid_import_total);
+   overall_total += grid_import_total ;   //lint !e725  Expected positive indentation from line 328
+   yearly_totals[year_idx].yearly_total += grid_import_total ;
+   console->dputsf(L"==============     =======\n");
+   //  compute and display yearly totals
+   for (uint idx=0; idx<=year_idx; idx++) {
+      console->dputsf(L"total (%04u):      %7.1f\n", 
+         yearly_totals[idx].year,
+         yearly_totals[idx].yearly_total);
+   }
+   console->dputsf(L"total [overall]:   %7.1f\n\n", overall_total);
 }

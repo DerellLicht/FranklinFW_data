@@ -297,8 +297,8 @@ void list_data_elements(void)
 
 static uint const MAX_YEARS = 20 ;
 struct yearly_totals_s {
-uint year ;
-double yearly_total ;   
+   uint year ;
+   double yearly_total ;   
 } ;
 static yearly_totals_s yearly_totals[MAX_YEARS] ;
 static uint year_idx = 0 ;

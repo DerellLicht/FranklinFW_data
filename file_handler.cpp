@@ -322,7 +322,7 @@ std::vector<yearly_totals_s> yearly_totals;
 
 void list_grid_IO_by_month(void)
 {
-   yearly_totals_s *this_year ;
+   yearly_totals_s *this_year {};
    console->dputsf(L"show grid import/export by month\n");
    console->dputsf(L"number of data elements: %u\n\n", get_data_list_size());
    
@@ -391,7 +391,9 @@ void list_grid_IO_by_month(void)
    //  pick up last record
    console->dputsf(L"month: %2u/%4u     %7.1f\n\n", curr_month, curr_year, grid_import_total);
    overall_total += grid_import_total ;   //lint !e725  Expected positive indentation from line 328
-   this_year->yearly_total += grid_import_total ;
+   if (this_year != NULL) {
+      this_year->yearly_total += grid_import_total ;
+   }
          
    console->dputsf(L"==============     =======\n");
    //  compute and display yearly totals

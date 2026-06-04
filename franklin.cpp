@@ -33,8 +33,6 @@ double total_ptime = 0.0 ;
 //lint -esym(818, filespec, argv)  //could be declared as pointing to const
 // lint -e10  Expecting '}'
 
-std::vector<ffdata> flist;
-
 //lint -esym(843, filecount)  Variable could be declared as const
 static uint filecount = 0 ;
 
@@ -62,7 +60,10 @@ filename(sfilename),
 dirflag(sdirflag)
 {}
 
+std::vector<ffdata> flist {};
+
 //**********************************************************************************
+//lint -esym(745, read_files)  function has no explicit type or class, int assumed
 int read_files(TCHAR *filespec)
 {
    WIN32_FIND_DATA fdata ; //  long-filename file struct
@@ -103,7 +104,7 @@ int read_files(TCHAR *filespec)
          // flist.emplace_back(ffdata_t());
         flist.emplace_back( fdata.dwFileAttributes,
                             fdata.ftCreationTime,
-                           (fdata.nFileSizeHigh * 1LL<<32) + fdata.nFileSizeLow,
+                           (fdata.nFileSizeHigh * (1ULL<<32)) + fdata.nFileSizeLow,
                             fdata.cFileName,
                            (fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ? true : false);
       }  //lint !e550  end while()

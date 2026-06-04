@@ -295,16 +295,34 @@ void list_data_elements(void)
 //lint -esym(843, year_idx)  Variable could be declared as const
 //lint -esym(551, MAX_YEARS)  Symbol not accessed
 
-static uint const MAX_YEARS = 20 ;
+//  data output before converting yearly_totals array to <vector>
+// D:\SourceCode\Git\FranklinFW_data Yes, Master?? > franklin data\*week.csv -g
+// FranklinFW data analyzer, Version 1.00, 32-bit
+// show grid import/export by month
+// number of data elements: 161
+// 
+// month: 12/2025       116.1
+// month:  1/2026       241.7
+// month:  2/2026       137.3
+// month:  3/2026       -40.6
+// month:  4/2026      -102.5
+// month:  5/2026      -139.0
+// 
+// ==============     =======
+// total (2025):        116.1
+// total (2026):         96.9
+// total [overall]:     213.0
+
 struct yearly_totals_s {
    uint year ;
    double yearly_total ;   
 } ;
-static yearly_totals_s yearly_totals[MAX_YEARS] ;
-static uint year_idx = 0 ;
+
+std::vector<yearly_totals_s> yearly_totals;
 
 void list_grid_IO_by_month(void)
 {
+   yearly_totals_s *this_year ;
    console->dputsf(L"show grid import/export by month\n");
    console->dputsf(L"number of data elements: %u\n\n", get_data_list_size());
    
@@ -312,6 +330,7 @@ void list_grid_IO_by_month(void)
    uint curr_month = 0 ;
    double grid_import_total = 0.0 ;
    double overall_total = 0.0 ;
+   uint year_idx = 0 ;
    
    for(auto &fdtemp : fdlist) {
       uint ymd   = _wtoi(fdtemp.date_str.c_str());
@@ -324,27 +343,38 @@ void list_grid_IO_by_month(void)
          curr_year = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
-         yearly_totals[year_idx].year = curr_year ;
-         yearly_totals[year_idx].yearly_total = 0.0 ;
+         
+         yearly_totals.emplace_back();
+         year_idx = yearly_totals.size() - 1 ;
+         this_year = &yearly_totals[year_idx] ;
+         
+         this_year->year = curr_year ;
+         this_year->yearly_total = 0.0 ;
          // console->dputsf(L"starting ym: %2u %4u\n\n", month, year);
       }
       //  if year changed, update annual totals
       //  We can assume that if year changes, month changes as well
       else if (curr_year != year) {
          console->dputsf(L"month: %2u/%4u     %7.1f\n", curr_month, curr_year, grid_import_total);
-         yearly_totals[year_idx].yearly_total = grid_import_total ;
-         year_idx++ ;
+         this_year->yearly_total += grid_import_total ;
+         
          overall_total += grid_import_total ;
          curr_year = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
-         yearly_totals[year_idx].year = curr_year ;
-         yearly_totals[year_idx].yearly_total = 0.0 ;
+         
+         yearly_totals.emplace_back();
+         year_idx = yearly_totals.size() - 1 ;
+         
+         this_year = &yearly_totals[year_idx] ;
+         this_year->year = curr_year ;
+         this_year->yearly_total = 0.0 ;
       }
       else if (curr_month != month) {
          console->dputsf(L"month: %2u/%4u     %7.1f\n", curr_month, curr_year, grid_import_total);
          overall_total += grid_import_total ;
-         yearly_totals[year_idx].yearly_total += grid_import_total ;
+         this_year->yearly_total += grid_import_total ;
+         
          curr_year = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
@@ -361,13 +391,13 @@ void list_grid_IO_by_month(void)
    //  pick up last record
    console->dputsf(L"month: %2u/%4u     %7.1f\n\n", curr_month, curr_year, grid_import_total);
    overall_total += grid_import_total ;   //lint !e725  Expected positive indentation from line 328
-   yearly_totals[year_idx].yearly_total += grid_import_total ;
+   this_year->yearly_total += grid_import_total ;
+         
    console->dputsf(L"==============     =======\n");
    //  compute and display yearly totals
-   for (uint idx=0; idx<=year_idx; idx++) {
-      console->dputsf(L"total (%04u):      %7.1f\n", 
-         yearly_totals[idx].year,
-         yearly_totals[idx].yearly_total);
+   for(auto &year_total : yearly_totals) {
+      console->dputsf(L"total (%04u):      %7.1f\n", year_total.year, year_total.yearly_total);
    }
+   
    console->dputsf(L"total [overall]:   %7.1f\n\n", overall_total);
 }

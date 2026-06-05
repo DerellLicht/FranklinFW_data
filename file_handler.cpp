@@ -356,9 +356,6 @@ void list_grid_IO_by_month(void)
          yearly_totals.emplace_back(curr_year, 0.0);
          year_idx = yearly_totals.size() - 1 ;
          this_year = &yearly_totals[year_idx] ;
-         
-         // this_year->year = curr_year ;
-         // this_year->yearly_total = 0.0 ;
          // console->dputsf(L"starting ym: %2u %4u\n\n", month, year);
       }
       //  if year changed, update annual totals
@@ -375,9 +372,6 @@ void list_grid_IO_by_month(void)
          yearly_totals.emplace_back(curr_year, 0.0);
          year_idx = yearly_totals.size() - 1 ;
          this_year = &yearly_totals[year_idx] ;
-         
-         // this_year->year = curr_year ;
-         // this_year->yearly_total = 0.0 ;
       }
       else if (curr_month != month) {
          console->dputsf(L"month: %2u/%4u     %7.1f\n", curr_month, curr_year, grid_import_total);

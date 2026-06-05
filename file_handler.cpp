@@ -318,7 +318,7 @@ struct yearly_totals_s {
    double yearly_total ;   
 } ;
 
-std::vector<yearly_totals_s> yearly_totals;
+static std::vector<yearly_totals_s> yearly_totals;
 
 void list_grid_IO_by_month(void)
 {

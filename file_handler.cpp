@@ -338,7 +338,6 @@ void list_grid_IO_by_month(void)
    uint curr_year = 0 ;
    uint curr_month = 0 ;
    double grid_import_total = 0.0 ;
-   double overall_total = 0.0 ;
    uint year_idx = 0 ;
    
    for(auto &fdtemp : fdlist) {
@@ -349,7 +348,7 @@ void list_grid_IO_by_month(void)
       uint year  = ym / 100 ;
       //  handle very first element
       if (curr_year == 0) {
-         curr_year = year ;
+         curr_year  = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
          
@@ -364,8 +363,7 @@ void list_grid_IO_by_month(void)
          console->dputsf(L"month: %2u/%4u     %7.1f\n", curr_month, curr_year, grid_import_total);
          this_year->yearly_total += grid_import_total ;
          
-         overall_total += grid_import_total ;
-         curr_year = year ;
+         curr_year  = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
          
@@ -375,10 +373,9 @@ void list_grid_IO_by_month(void)
       }
       else if (curr_month != month) {
          console->dputsf(L"month: %2u/%4u     %7.1f\n", curr_month, curr_year, grid_import_total);
-         overall_total += grid_import_total ;
          this_year->yearly_total += grid_import_total ;
          
-         curr_year = year ;
+         curr_year  = year ;
          curr_month = month ;
          grid_import_total = 0.0 ;
       }
@@ -393,15 +390,16 @@ void list_grid_IO_by_month(void)
    
    //  pick up last record
    console->dputsf(L"month: %2u/%4u     %7.1f\n\n", curr_month, curr_year, grid_import_total);
-   overall_total += grid_import_total ;   //lint !e725  Expected positive indentation from line 328
    if (this_year != NULL) {
       this_year->yearly_total += grid_import_total ;
    }
          
    console->dputsf(L"==============     =======\n");
    //  compute and display yearly totals
+   double overall_total = 0.0 ;
    for(auto &year_total : yearly_totals) {
       console->dputsf(L"total (%04u):      %7.1f\n", year_total.year, year_total.yearly_total);
+      overall_total += year_total.yearly_total ;
    }
    
    console->dputsf(L"total [overall]:   %7.1f\n\n", overall_total);

@@ -318,7 +318,8 @@ struct yearly_totals_s {
    double yearly_total {};
    yearly_totals_s (uint iyear, double iyearly_total) ;
 } ;
-  
+
+//  constructor with data values specified  
 yearly_totals_s::yearly_totals_s (
    uint iyear,
    double iyearly_total

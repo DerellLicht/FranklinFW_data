@@ -1,3 +1,12 @@
 Checks: |
+  clang-diagnostic-*,
   -clang-diagnostic-writable-strings,
   -clang-analyzer-security.insecureAPI.strcpy,
+  clang-analyzer-security.ArrayBound,
+  bugprone-*,
+  -bugprone-branch-clone,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-switch-missing-default-case,
+  -bugprone-throwing-static-initialization
+  

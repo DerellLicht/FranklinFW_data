@@ -18,7 +18,8 @@
 #endif
 #include "franklin.h"
 
-//lint -esym(601, Franklin_data::wstring) No explicit type for symbol
+//lint -esym(601, Franklin_data::wstring, yearly_totals_s::uint)  No explicit type for symbol 
+//lint -esym(752, month_str)  local declarator not referenced
 
 static uint max_filename_len = 0 ;
 
@@ -64,7 +65,7 @@ void calc_max_filename_len(ffdata& ftemp)
    if (max_filename_len < flen) {
       max_filename_len = flen ;
    }
-}  //lint !e550 !e1764
+}  //lint !e550 !e1764 !e715
 
 //************************************************************************
 static wchar_t const month_str[13][4] = {

@@ -22,3 +22,9 @@
 //lint -e734   Loss of precision (assignment) (31 bits to 15 bits)
 //lint -e732   Loss of sign (arg. no. 3) (int to unsigned long)
 
+//  later C++ alterations
+//lint -e745   function has no explicit type or class, int assumed (lint doesn't know uint now)
+//lint -esym(728, uint)  Symbol 'uint' not explicitly initialized
+//lint -esym(551, uint)  Symbol 'uint' not accessed
+//lint -esym(843, uint)  Variable 'uint' (line 37, file franklin.cpp) could be declared as const
+//lint -e1075  Ambiguous reference to symbol 'uint' and symbol 'uint'

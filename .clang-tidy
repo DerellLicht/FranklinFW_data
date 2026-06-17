@@ -42,6 +42,7 @@ Checks: |
   -modernize-use-bool-literals,
   -modernize-use-auto,
   -modernize-avoid-variadic-functions,
+  -modernize-use-using,
   performance-*,
   -performance-no-int-to-ptr,
   -performance-enum-size,

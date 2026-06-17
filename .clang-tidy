@@ -7,7 +7,7 @@ Checks: |
   -bugprone-throwing-static-initialization
   -bugprone-incorrect-roundings
   -bugprone-assignment-in-if-condition
-  clang-analyzer-security.*,
+  clang-analyzer*,
   -clang-analyzer-security.insecureAPI.strcpy,
   clang-diagnostic-*,
   -clang-diagnostic-writable-strings,

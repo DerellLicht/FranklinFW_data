@@ -1,3 +1,4 @@
+#https://clang.llvm.org/extra/clang-tidy/#id2
 Checks: |
   bugprone-*,
   -bugprone-branch-clone,

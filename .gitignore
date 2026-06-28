@@ -7,6 +7,7 @@ images/
 video/
 history/
 glock17/
+build/
 _lint.tmp
 *.zip
 images.out

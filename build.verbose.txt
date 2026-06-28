@@ -1,0 +1,42 @@
+D:\CMake\bin\cmake.exe -SD:\SourceCode\Git\FranklinFW_data -BD:\SourceCode\Git\FranklinFW_data\build --check-build-system CMakeFiles\Makefile.cmake 0
+D:\CMake\bin\cmake.exe -E cmake_progress_start D:\SourceCode\Git\FranklinFW_data\build\CMakeFiles D:\SourceCode\Git\FranklinFW_data\build\\CMakeFiles\progress.marks
+D:/tdm32/bin/mingw32-make.exe  -f CMakeFiles\Makefile2 all
+mingw32-make.exe[1]: Entering directory 'D:/SourceCode/Git/FranklinFW_data/build'
+D:/tdm32/bin/mingw32-make.exe  -f CMakeFiles\franklin.dir\build.make CMakeFiles/franklin.dir/depend
+mingw32-make.exe[2]: Entering directory 'D:/SourceCode/Git/FranklinFW_data/build'
+D:\CMake\bin\cmake.exe -E cmake_depends "MinGW Makefiles" D:\SourceCode\Git\FranklinFW_data D:\SourceCode\Git\FranklinFW_data D:\SourceCode\Git\FranklinFW_data\build D:\SourceCode\Git\FranklinFW_data\build D:\SourceCode\Git\FranklinFW_data\build\CMakeFiles\franklin.dir\DependInfo.cmake "--color=" franklin
+mingw32-make.exe[2]: Leaving directory 'D:/SourceCode/Git/FranklinFW_data/build'
+D:/tdm32/bin/mingw32-make.exe  -f CMakeFiles\franklin.dir\build.make CMakeFiles/franklin.dir/build
+mingw32-make.exe[2]: Entering directory 'D:/SourceCode/Git/FranklinFW_data/build'
+[ 16%] Building CXX object CMakeFiles/franklin.dir/franklin.cpp.obj
+
+d:\tdm32\bin\g++.exe -DUNICODE -D_UNICODE @CMakeFiles\franklin.dir\includes_CXX.rsp -O3 -DNDEBUG -Wall -Weffc++ -Wno-write-strings -O3
+-MD -MT CMakeFiles/franklin.dir/franklin.cpp.obj -MF CMakeFiles\franklin.dir\franklin.cpp.obj.d -o CMakeFiles\franklin.dir\franklin.cpp.obj -c D:\SourceCode\Git\FranklinFW_data\franklin.cpp
+[ 33%] Building CXX object CMakeFiles/franklin.dir/file_handler.cpp.obj
+
+d:\tdm32\bin\g++.exe -DUNICODE -D_UNICODE @CMakeFiles\franklin.dir\includes_CXX.rsp -O3 -DNDEBUG -Wall -Weffc++ -Wno-write-strings -O3
+-MD -MT CMakeFiles/franklin.dir/file_handler.cpp.obj -MF CMakeFiles\franklin.dir\file_handler.cpp.obj.d -o CMakeFiles\franklin.dir\file_handler.cpp.obj -c D:\SourceCode\Git\FranklinFW_data\file_handler.cpp
+[ 50%] Building CXX object CMakeFiles/franklin.dir/der_libs/conio_min.cpp.obj
+
+d:\tdm32\bin\g++.exe -DUNICODE -D_UNICODE @CMakeFiles\franklin.dir\includes_CXX.rsp -O3 -DNDEBUG -Wall -Weffc++ -Wno-write-strings -O3
+-MD -MT CMakeFiles/franklin.dir/der_libs/conio_min.cpp.obj -MF CMakeFiles\franklin.dir\der_libs\conio_min.cpp.obj.d -o CMakeFiles\franklin.dir\der_libs\conio_min.cpp.obj -c D:\SourceCode\Git\FranklinFW_data\der_libs\conio_min.cpp
+[ 66%] Building CXX object CMakeFiles/franklin.dir/der_libs/common_funcs.cpp.obj
+
+d:\tdm32\bin\g++.exe -DUNICODE -D_UNICODE @CMakeFiles\franklin.dir\includes_CXX.rsp -O3 -DNDEBUG -Wall -Weffc++ -Wno-write-strings -O3
+-MD -MT CMakeFiles/franklin.dir/der_libs/common_funcs.cpp.obj -MF CMakeFiles\franklin.dir\der_libs\common_funcs.cpp.obj.d -o CMakeFiles\franklin.dir\der_libs\common_funcs.cpp.obj -c D:\SourceCode\Git\FranklinFW_data\der_libs\common_funcs.cpp
+[ 83%] Building CXX object CMakeFiles/franklin.dir/der_libs/qualify.cpp.obj
+
+d:\tdm32\bin\g++.exe -DUNICODE -D_UNICODE @CMakeFiles\franklin.dir\includes_CXX.rsp -O3 -DNDEBUG -Wall -Weffc++ -Wno-write-strings -O3
+-MD -MT CMakeFiles/franklin.dir/der_libs/qualify.cpp.obj -MF CMakeFiles\franklin.dir\der_libs\qualify.cpp.obj.d -o CMakeFiles\franklin.dir\der_libs\qualify.cpp.obj -c D:\SourceCode\Git\FranklinFW_data\der_libs\qualify.cpp
+[100%] Linking CXX executable franklin.exe
+
+D:\CMake\bin\cmake.exe -E cmake_link_script CMakeFiles\franklin.dir\link.txt --verbose=1
+D:\CMake\bin\cmake.exe -E rm -f CMakeFiles\franklin.dir/objects.a
+D:\tdm32\bin\ar.exe qc CMakeFiles\franklin.dir/objects.a @CMakeFiles\franklin.dir\objects1.rsp
+
+d:\tdm32\bin\g++.exe -O3 -DNDEBUG -s -static -Wl,--whole-archive CMakeFiles\franklin.dir/objects.a -Wl,--no-whole-archive -o franklin.exe -Wl,--out-implib,libfranklin.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\franklin.dir\linkLibs.rsp
+
+mingw32-make.exe[2]: Leaving directory 'D:/SourceCode/Git/FranklinFW_data/build'
+[100%] Built target franklin
+mingw32-make.exe[1]: Leaving directory 'D:/SourceCode/Git/FranklinFW_data/build'
+D:\CMake\bin\cmake.exe -E cmake_progress_start D:\SourceCode\Git\FranklinFW_data\build\CMakeFiles 0

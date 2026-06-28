@@ -3,10 +3,10 @@
 USE_DEBUG = NO
 USE_64BIT = NO
 USE_UNICODE = YES
-USE_CLANG = YES
+USE_CLANG = NO
 # use -static for clang and cygwin/mingw
 # with -static 340KB, without -static: 33KB
-USE_STATIC = YES
+USE_STATIC = NO
 
 #  clang++ vs tdm g++
 #  clang gives *much* clearer compiler error messages...

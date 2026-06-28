@@ -4,10 +4,19 @@ project(franklin CXX)
 # ---------------------------------------------------------------------------
 # Build options (mirrors the USE_* flags at the top of the original Makefile)
 # ---------------------------------------------------------------------------
-option(USE_DEBUG      "Build with debug info, no optimization" OFF)
+option(USE_DEBUG     "Build with debug info, no optimization" OFF)
 option(USE_64BIT      "Build 64-bit target (franklin64.exe)"   OFF)
 option(USE_UNICODE    "Define UNICODE / _UNICODE"              ON)
 option(USE_STATIC     "Statically link the runtime (-static)"  ON)
+option(USE_VERBOSE    "Print full compiler/linker command lines during build" OFF)
+
+# When USE_VERBOSE is ON, every compile/link step prints its complete,
+# unabbreviated command line (equivalent to the un-@-prefixed recipe lines
+# in the original Makefile, or running `cmake --build build --verbose`
+# without having to remember to type --verbose every time).
+if(USE_VERBOSE)
+    set(CMAKE_VERBOSE_MAKEFILE ON)
+endif()
 
 # USE_CLANG in the Makefile only selected which toolchain dir to look in
 # (d:\clang\bin vs d:\tdm32\bin / d:\tdm64\bin). With CMake, select the

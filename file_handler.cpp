@@ -1,6 +1,6 @@
 //**********************************************************************************
 //  Copyright (c) 2026 Daniel D. Miller                       
-//  This file does the actual work on each file
+//  This file does the actual work on each data file
 //**********************************************************************************
 
 #include <windows.h>
@@ -44,7 +44,6 @@ struct Franklin_data {
     float kWh_generator {};
     float kWh_v2l {};
 } ;
-
 
 std::vector<Franklin_data> fdlist ;
 

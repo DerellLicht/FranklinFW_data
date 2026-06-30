@@ -24,6 +24,7 @@
    @if /I "%~2" NEQ "init" goto :build
       @rem This command only needs to be run *once*, any time the targets change
       cmake -B build -G "MinGW Makefiles" -DCMAKE_CXX_COMPILER=d:/tdm32/bin/g++.exe
+      @rem we intentionally fall through to build label here
 :build
       @rem this will build the target
       cmake --build build

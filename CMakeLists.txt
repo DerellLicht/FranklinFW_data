@@ -4,7 +4,7 @@ project(franklin CXX)
 # ---------------------------------------------------------------------------
 # Build options (mirrors the USE_* flags at the top of the original Makefile)
 # ---------------------------------------------------------------------------
-option(USE_DEBUG     "Build with debug info, no optimization" OFF)
+option(USE_DEBUG      "Build with debug info, no optimization" OFF)
 option(USE_64BIT      "Build 64-bit target (franklin64.exe)"   OFF)
 option(USE_UNICODE    "Define UNICODE / _UNICODE"              ON)
 option(USE_STATIC     "Statically link the runtime (-static)"  ON)

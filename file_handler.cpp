@@ -369,7 +369,7 @@ void list_grid_IO_by_month(void)
          grid_import_total = 0.0 ;
          
          yearly_totals.emplace_back(curr_year, 0.0);
-         year_idx = yearly_totals.size() - 1 ;
+         year_idx  = yearly_totals.size() - 1 ;
          this_year = &yearly_totals[year_idx] ;
       }
       else if (curr_month != month) {

@@ -10,14 +10,16 @@ USE_STATIC = NO
 
 #  clang++ vs tdm g++
 #  clang gives *much* clearer compiler error messages...
-#  However, programs built with clang++ will require libc++.dll.
-#  in order to be used elsewhere.
+#  However, programs built with clang++ will require libc++.dll and libunwind.dll
+#  in order to be used elsewhere 
+#  (unless built with -static, which significantly boosts file size)
 #  That is why the executable files are smaller than TDM ...
 ifeq ($(USE_64BIT),YES)
 TOOLS=d:\tdm64\bin
 else
 ifeq ($(USE_CLANG),YES)
-TOOLS=d:\clang\bin
+#TOOLS=d:\clang\bin
+TOOLS=d:\llvm\bin
 else
 TOOLS=d:\tdm32\bin
 endif
@@ -62,15 +64,8 @@ der_libs\common_funcs.cpp \
 der_libs\qualify.cpp 
 
 #  clang-tidy options
-CHFLAGS = -header-filter=.*
-CHTAIL = --
-CHTAIL += -Ider_libs
-ifeq ($(USE_64BIT),YES)
-CHTAIL += -DUSE_64BIT
-endif
-ifeq ($(USE_UNICODE),YES)
-CHTAIL += -DUNICODE -D_UNICODE
-endif
+CHFLAGS =  --extra-arg=-isystemd:/tdm32/lib/gcc/mingw32/10.3.0/include/c++ 
+CHFLAGS += --extra-arg=-isystemd:/tdm32/lib/gcc/mingw32/10.3.0/include/c++/mingw32
 
 LINTFILES=lintdefs.cpp lintdefs.ref.h 
 

@@ -1,0 +1,40 @@
+[
+ {
+  "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
+  "arguments": [
+   "d:/tdm32bin/g++",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-DUNICODE",
+   "-D_UNICODE",
+   "-Ider_libs",
+   "-c",
+   "franklin.cpp",
+   "-o",
+   "franklin.o"
+  ],
+  "file": "franklin.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
+  "arguments": [
+   "d:/tdm32bin/g++",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-DUNICODE",
+   "-D_UNICODE",
+   "-Ider_libs",
+   "-c",
+   "file_handler.cpp",
+   "-o",
+   "file_handler.o"
+  ],
+  "file": "file_handler.cpp"
+ }
+]

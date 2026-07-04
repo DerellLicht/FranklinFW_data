@@ -34,5 +34,59 @@
    "file_handler.o"
   ],
   "file": "file_handler.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-DUNICODE",
+   "-D_UNICODE",
+   "-Ider_libs",
+   "der_libs/conio_min.cpp",
+   "-o",
+   "der_libs/conio_min.o"
+  ],
+  "file": "der_libs/conio_min.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-DUNICODE",
+   "-D_UNICODE",
+   "-Ider_libs",
+   "der_libs/common_funcs.cpp",
+   "-o",
+   "der_libs/common_funcs.o"
+  ],
+  "file": "der_libs/common_funcs.cpp"
+ },
+ {
+  "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
+  "arguments": [
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
+   "-Wall",
+   "-O3",
+   "-c",
+   "-Weffc++",
+   "-Wno-write-strings",
+   "-DUNICODE",
+   "-D_UNICODE",
+   "-Ider_libs",
+   "der_libs/qualify.cpp",
+   "-o",
+   "der_libs/qualify.o"
+  ],
+  "file": "der_libs/qualify.cpp"
  }
 ]

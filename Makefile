@@ -59,9 +59,9 @@ LFLAGS += -static
 endif
 
 CPPSRC=franklin.cpp file_handler.cpp \
-der_libs\conio_min.cpp \
-der_libs\common_funcs.cpp \
-der_libs\qualify.cpp 
+der_libs/conio_min.cpp \
+der_libs/common_funcs.cpp \
+der_libs/qualify.cpp 
 
 LINTFILES=lintdefs.cpp lintdefs.ref.h 
 
@@ -111,6 +111,6 @@ $(BIN): $(OBJS)
 franklin.o: der_libs/common.h der_libs/conio_min.h franklin.h
 franklin.o: der_libs/qualify.h
 file_handler.o: der_libs/common.h der_libs/conio_min.h franklin.h
-der_libs\conio_min.o: der_libs/common.h der_libs/conio_min.h
-der_libs\common_funcs.o: der_libs/common.h
-der_libs\qualify.o: der_libs/common.h der_libs/qualify.h
+der_libs/conio_min.o: der_libs/common.h der_libs/conio_min.h
+der_libs/common_funcs.o: der_libs/common.h
+der_libs/qualify.o: der_libs/common.h der_libs/qualify.h

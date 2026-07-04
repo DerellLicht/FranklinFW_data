@@ -2,7 +2,7 @@
  {
   "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
   "arguments": [
-   "D:/llvm/bin/x86_64-w64-mingw32-clang++.exe",
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
    "-Wall",
    "-O3",
    "-c",
@@ -11,7 +11,6 @@
    "-DUNICODE",
    "-D_UNICODE",
    "-Ider_libs",
-   "-c",
    "franklin.cpp",
    "-o",
    "franklin.o"
@@ -21,7 +20,7 @@
  {
   "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
   "arguments": [
-   "D:/llvm/bin/x86_64-w64-mingw32-clang++.exe",
+   "D:/llvm/bin/i686-w64-mingw32-clang++.exe",
    "-Wall",
    "-O3",
    "-c",
@@ -30,7 +29,6 @@
    "-DUNICODE",
    "-D_UNICODE",
    "-Ider_libs",
-   "-c",
    "file_handler.cpp",
    "-o",
    "file_handler.o"

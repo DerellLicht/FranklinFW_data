@@ -2,7 +2,7 @@
  {
   "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
   "arguments": [
-   "d:/tdm32bin/g++",
+   "D:/llvm/bin/x86_64-w64-mingw32-clang++.exe",
    "-Wall",
    "-O3",
    "-c",
@@ -21,7 +21,7 @@
  {
   "directory": "D:\\SourceCode\\Git\\FranklinFW_data",
   "arguments": [
-   "d:/tdm32bin/g++",
+   "D:/llvm/bin/x86_64-w64-mingw32-clang++.exe",
    "-Wall",
    "-O3",
    "-c",

@@ -63,10 +63,6 @@ der_libs\conio_min.cpp \
 der_libs\common_funcs.cpp \
 der_libs\qualify.cpp 
 
-#  clang-tidy options
-CHFLAGS =  --extra-arg=-isystemd:/tdm32/lib/gcc/mingw32/10.3.0/include/c++ 
-CHFLAGS += --extra-arg=-isystemd:/tdm32/lib/gcc/mingw32/10.3.0/include/c++/mingw32
-
 LINTFILES=lintdefs.cpp lintdefs.ref.h 
 
 OBJS = $(CPPSRC:.cpp=.o)

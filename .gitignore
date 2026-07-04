@@ -12,3 +12,4 @@ _lint.tmp
 *.zip
 images.out
 display.formats.txt
+.idea/

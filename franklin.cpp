@@ -78,7 +78,7 @@ int read_files(TCHAR *filespec)
    }
 
    //  loop on find_next
-   bool fn_okay = false ;
+   bool fn_okay ;
    bool done = false;
    while (!done) {
       if ((fdata.dwFileAttributes & FILE_ATTRIBUTE_VOLID) != 0)
@@ -102,11 +102,11 @@ int read_files(TCHAR *filespec)
          //  allocate and initialize the structure
          //****************************************************
          // flist.emplace_back(ffdata_t());
-        flist.emplace_back( fdata.dwFileAttributes,
-                            fdata.ftCreationTime,
-                           (fdata.nFileSizeHigh * (1ULL<<32)) + fdata.nFileSizeLow,
-                            fdata.cFileName,
-                           (fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ? true : false);
+         flist.emplace_back( fdata.dwFileAttributes,
+                             fdata.ftCreationTime,
+                            (fdata.nFileSizeHigh * (1ULL<<32)) + fdata.nFileSizeLow,
+                             fdata.cFileName,
+                            (fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ? true : false);
       }  //lint !e550  end while()
 
       //  search for another file
@@ -203,7 +203,7 @@ int wmain(int argc, wchar_t *argv[])
    
    int idx ;
    for (idx=1; idx<argc; idx++) {
-      wchar_t *p = argv[idx];
+      wchar_t const *p = argv[idx];
       if (*p == '-') {
          p++ ;
          switch(*p) {

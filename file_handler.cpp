@@ -339,9 +339,9 @@ void list_grid_IO_by_month(void)
    uint curr_year = 0 ;
    uint curr_month = 0 ;
    double grid_import_total = 0.0 ;
-   uint year_idx = 0 ;
    
-   for(auto &fdtemp : fdlist) {
+   for(auto const &fdtemp : fdlist) {
+      uint year_idx ;
       uint ymd   = _wtoi(fdtemp.date_str.c_str());
       // uint day   = ymd % 100 ;
       uint ym    = ymd / 100 ;

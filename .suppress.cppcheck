@@ -1,0 +1,7 @@
+constParameter:franklin.cpp:180
+constParameterReference:file_handler.cpp:60
+
+unusedFunction
+missingIncludeSystem
+cstyleCast
+dangerousTypeCast

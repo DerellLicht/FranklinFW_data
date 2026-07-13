@@ -4,8 +4,7 @@ USE_DEBUG = NO
 USE_64BIT = NO
 USE_UNICODE = YES
 USE_CLANG = NO
-# use -static for clang and cygwin/mingw
-# with -static 340KB, without -static: 33KB
+# use -static for clang/llvm and cygwin/mingw
 USE_STATIC = NO
 
 #  clang++ vs tdm g++
@@ -14,14 +13,18 @@ USE_STATIC = NO
 #  in order to be used elsewhere 
 #  (unless built with -static, which significantly boosts file size)
 #  That is why the executable files are smaller than TDM ...
+# llvm:  374784 bytes
+# tdm32: 232960 bytes
 ifeq ($(USE_64BIT),YES)
 TOOLS=d:\tdm64\bin
+GNAME=g++
 else
 ifeq ($(USE_CLANG),YES)
-#TOOLS=d:\llvm\bin
 TOOLS=d:\llvm\bin
+GNAME=clang++
 else
 TOOLS=d:\tdm32\bin
+GNAME=g++
 endif
 endif
 
@@ -69,12 +72,9 @@ OBJS = $(CPPSRC:.cpp=.o)
 
 LIBS=-lshlwapi -lcomdlg32
 
-GNAME=g++
-#GNAME=clang++
-
 #**************************************************************************
 %.o: %.cpp
-	$(TOOLS)/$(GNAME) $(CFLAGS) -c $< -o $@
+	$(TOOLS)/$(GNAME) $(CFLAGS) $< -o $@
 
 ifeq ($(USE_64BIT),NO)
 BIN = franklin.exe

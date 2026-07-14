@@ -307,6 +307,22 @@ static int convert_date(ymd_s &ymd_record, std::wstring &date_str)
 
 std::array<int, 13> month_max_days = {
    0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+   
+std::array<std::wstring, 13> month_names = {
+   L"N/A",
+   L"January",
+   L"February",
+   L"March",
+   L"April",
+   L"May",
+   L"June",
+   L"July",
+   L"August",
+   L"September",
+   L"October",
+   L"November",
+   L"December"
+};
 
 void list_data_elements(void)
 {
@@ -321,6 +337,7 @@ void list_data_elements(void)
          fdtemp.kWh_grid_import - fdtemp.kWh_grid_export, 
          fdtemp.kWh_generator, fdtemp.kWh_v2l);
    }
+   console->dputsf(L"\n");
 
    //  scan again, looking for gaps in date entries
    //  Note:  all of this code is assuming that all of the recovered daily records
@@ -333,8 +350,8 @@ void list_data_elements(void)
       //  this is first pass through loop
       if (prev_date.year == 0) {
          convert_date(prev_date, fdtemp.date_str);
-         console->dputsf(L"First date is Y%04u, M%02u, D%02u\n\n", 
-            prev_date.year, prev_date.month, prev_date.day);
+         console->dputsf(L"First record date is %s %u, %u\n", 
+            month_names[prev_date.month].c_str(), prev_date.day, prev_date.year);
       }
       else {
          convert_date(curr_date, fdtemp.date_str);
@@ -342,8 +359,8 @@ void list_data_elements(void)
          //  first, check for change of year
          if (curr_date.year != prev_date.year) {
             if (prev_date.month != 12  ||  prev_date.day != 31) {
-               console->dputsf(L"year %04u ended on month%02u, day%02u\n\n", 
-                  prev_date.year, prev_date.month, prev_date.day);
+               console->dputsf(L"year %04u ended on month %s, day%02u\n", 
+                  prev_date.year, month_names[prev_date.month].c_str(), prev_date.day);
             }
          }
          //  second, check for change of month
@@ -351,7 +368,8 @@ void list_data_elements(void)
             uint max_days = month_max_days[prev_date.month] ;
             // tweak max_days for February
             if (prev_date.month == 2) {
-               //  this won't be valid for (year % 100) == 0
+               //  this won't be valid for (year % 100) == 0,
+               //  unless (year % 400) == 0
                if ((prev_date.year % 4) != 0) {
                   max_days = 28 ;
                }
@@ -360,23 +378,39 @@ void list_data_elements(void)
             
             //  then, just check day against max_days
             if (prev_date.day != max_days) {
-               console->dputsf(L"year %04u: month %u ended at day: %02u\n", 
-                  prev_date.year, prev_date.month, prev_date.day);
+               console->dputsf(L"year %04u: %s ended at day: %u vs %u\n", 
+                  prev_date.year, month_names[prev_date.month].c_str(), prev_date.day, max_days);
             }
-            curr_date.day = 1 ;
+            
+            //  month changed, so curr_date contains first day of new month
+            if (curr_date.day != 1) {
+               console->dputsf(L"year %04u: %s starts at day %u\n", 
+                  curr_date.year, month_names[curr_date.month].c_str(), curr_date.day);
+               
+            }
          }
-         //  check for consecutive days within month
+         //  check for consecutive days within month.
+         //  NOTE: this block is *not* entered for first record of the month!
          else {
             if (curr_date.day != prev_date.day+1) {
-               console->dputsf(L"year %04u: month %u: gap detected between days %u and %u\n", 
-                  curr_date.year, curr_date.month, prev_date.day, curr_date.day) ;
+               // if (prev_date.day+1 == curr_date.day-1) {
+               if (curr_date.day - prev_date.day == 2) {
+                  console->dputsf(L"year %04u: %s: gap detected at day %u\n", 
+                     curr_date.year, month_names[prev_date.month].c_str(), prev_date.day+1) ;
+               }
+               else {
+                  console->dputsf(L"year %04u: %s: gap detected from days %u to %u\n", 
+                     curr_date.year, month_names[prev_date.month].c_str(), prev_date.day+1, curr_date.day-1) ;
+               }
             }
          }
          
          prev_date = curr_date ;
       }
    }
-   
+   //  show last record
+   console->dputsf(L"Last record date is %s %u, %u\n", 
+      month_names[curr_date.month].c_str(), curr_date.day, curr_date.year);
 }
 
 //************************************************************************

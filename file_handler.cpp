@@ -7,6 +7,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <array>
 // #include <wchar.h>
 #ifdef USE_64BIT
 #include <fileapi.h>
@@ -274,10 +275,41 @@ error_exit:
 }  //lint !e550
 
 //************************************************************************
+struct ymd_s {
+   u16 year ;
+   u8 month ;
+   u8 day ;
+} ;
+
+//  ymd_str is in format YYYYMMDD, NULL-term
+static int convert_date(ymd_s &ymd_record, std::wstring &date_str)
+{
+   std::wstring 
+   temp = date_str.substr(0, 4);
+   ymd_record.year   = (u16) wcstoul((wchar_t *) temp.c_str(), NULL, 10);
+   temp = date_str.substr(4, 2);
+   ymd_record.month  = (u16) wcstoul((wchar_t *) temp.c_str(), NULL, 10);
+   temp = date_str.substr(6, 2);
+   ymd_record.day    = (u16) wcstoul((wchar_t *) temp.c_str(), NULL, 10);
+   return 0 ;   
+}
+
+//************************************************************************
+// franklin data\*week.csv -l
+//************************************************************************
+// deduced-args array declaration requires -std=c++17, 
+// but that standard invalidates -wtoi() and swprintf(), which I am using.
+// so don't worry about that for now; I know what size my array is.
+// std::array month_max_days = {
+
+std::array<int, 13> month_max_days = {
+   0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
 void list_data_elements(void)
 {
    console->dputsf(L"number of data elements: %u\n\n", get_data_list_size());
    
+   //  show all data entries
    for(auto &fdtemp : fdlist) {
       console->dputsf(L"%s: H%4.1f S%4.1f BC%4.1f BD%4.1f GI%4.1f GE%4.1f [%5.1f] Gen%4.1f v2l%4.1f\n", 
          fdtemp.date_str.c_str(),
@@ -286,6 +318,66 @@ void list_data_elements(void)
          fdtemp.kWh_grid_import - fdtemp.kWh_grid_export, 
          fdtemp.kWh_generator, fdtemp.kWh_v2l);
    }
+
+   //  scan again, looking for gaps in date entries
+   //  Note:  all of this code is assuming that all of the recovered daily records
+   //         are sorted by Y,M,D ... if that ends up not being true, we will
+   //         need to run a sort on the list.
+   ymd_s prev_date{};
+   ymd_s curr_date{};
+   // char prev_date[9] {} ;
+   for(auto &fdtemp : fdlist) {
+      //  this is first pass through loop
+      if (prev_date.year == 0) {
+         convert_date(prev_date, fdtemp.date_str);
+         console->dputsf(L"First date is Y%04u, M%02u, D%02u\n\n", 
+            prev_date.year, prev_date.month, prev_date.day);
+      }
+      else {
+         convert_date(curr_date, fdtemp.date_str);
+         
+         //  first, check for change of year
+         if (curr_date.year != prev_date.year) {
+            if (prev_date.month != 12  ||  prev_date.day != 31) {
+               console->dputsf(L"year %04u ended on month%02u, day%02u\n\n", 
+                  prev_date.year, prev_date.month, prev_date.day);
+            }
+         }
+         //  second, check for change of month
+         else if (curr_date.month != prev_date.month) {
+            uint max_days = month_max_days[prev_date.month] ;
+            // tweak max_days for February
+            if (prev_date.month == 2) {
+               //  this won't be valid for (year % 100) == 0
+               if ((prev_date.year % 4) != 0) {
+                  max_days = 28 ;
+               }
+               console->dputsf(L"year %04u: February max days: %02u\n", prev_date.year, max_days);
+            }
+            
+            //  then, just check day against max_days
+            if (prev_date.day != max_days) {
+               console->dputsf(L"year %04u: month %u ended at day: %02u\n", 
+                  prev_date.year, prev_date.month, prev_date.day);
+            }
+         }
+         //  check for consecutive days within month
+         else {
+            if (curr_date.day != prev_date.day+1) {
+               console->dputsf(L"year %04u: month %u: gap detected between days %u and %u\n", 
+                  curr_date.year, curr_date.month, prev_date.day, curr_date.day) ;
+            }
+         }
+//  we don't detect July 1 and 2 missing...         
+// "Jun 29, 2026",23.7,24.9,0.0,0.0,13.9,15.1,0.0,0.0
+// "Jul 3, 2026",18.5,25.0,0.0,0.0,9.9,16.4,0.0,0.0
+// "Jul 4, 2026",18.7,23.9,0.0,0.0,10.7,15.9,0.0,0.0
+// "Jul 5, 2026",27.3,24.9,0.1,0.0,16.6,14.1,0.0,0.0
+         
+         prev_date = curr_date ;
+      }
+   }
+   
 }
 
 //************************************************************************

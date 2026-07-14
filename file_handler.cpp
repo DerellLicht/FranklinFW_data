@@ -309,20 +309,8 @@ std::array<int, 13> month_max_days = {
    0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
    
 std::array<std::wstring, 13> month_names = {
-   L"N/A",
-   L"January",
-   L"February",
-   L"March",
-   L"April",
-   L"May",
-   L"June",
-   L"July",
-   L"August",
-   L"September",
-   L"October",
-   L"November",
-   L"December"
-};
+   L"N/A", L"January", L"February", L"March", L"April", L"May", L"June",
+   L"July", L"August", L"September", L"October", L"November", L"December" };
 
 void list_data_elements(void)
 {
@@ -345,7 +333,6 @@ void list_data_elements(void)
    //         need to run a sort on the list.
    ymd_s prev_date{};
    ymd_s curr_date{};
-   // char prev_date[9] {} ;
    for(auto const &fdtemp : fdlist) {
       //  this is first pass through loop
       if (prev_date.year == 0) {

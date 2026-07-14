@@ -89,7 +89,7 @@ clean:
 
 dist:
 	rm -f franklin.zip
-	zip franklin.zip $(BIN) Readme.md
+	zip franklin.zip $(BIN) Readme.md LICENSE.txt
 
 wc:
 	wc -l $(CPPSRC)

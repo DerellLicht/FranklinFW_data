@@ -58,7 +58,7 @@ uint get_data_list_size(void)
 
 //************************************************************************
 //lint -esym(759, parse_data_files) header declaration for symbol could be moved from header to module
-void calc_max_filename_len(ffdata& ftemp)
+void calc_max_filename_len(ffdata const & ftemp)
 {
    // parse_data_files(file);
    uint flen = ftemp.filename.length();
@@ -282,7 +282,7 @@ struct ymd_s {
 } ;
 
 //  ymd_str is in format YYYYMMDD, NULL-term
-static int convert_date(ymd_s &ymd_record, std::wstring &date_str)
+static int convert_date(ymd_s &ymd_record, std::wstring const &date_str)
 {
    std::wstring 
    temp = date_str.substr(0, 4);
@@ -346,7 +346,7 @@ void list_data_elements(void)
    ymd_s prev_date{};
    ymd_s curr_date{};
    // char prev_date[9] {} ;
-   for(auto &fdtemp : fdlist) {
+   for(auto const &fdtemp : fdlist) {
       //  this is first pass through loop
       if (prev_date.year == 0) {
          convert_date(prev_date, fdtemp.date_str);

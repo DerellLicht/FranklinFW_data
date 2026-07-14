@@ -31,7 +31,7 @@ struct ffdata {
 } ;
 
 //  file_handler.cpp
-void calc_max_filename_len(ffdata& ftemp);
+void calc_max_filename_len(ffdata const & ftemp);
 int  parse_data_files(ffdata& ftemp);
 uint get_data_list_size(void);
 void list_data_elements(void);

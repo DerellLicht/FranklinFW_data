@@ -261,7 +261,7 @@ int wmain(int argc, wchar_t *argv[])
    if (filecount > 0) {
       //  find max filename length
       //  This is used in formatting console output messages in tables
-      for(auto &file : flist) {
+      for(auto const &file : flist) {
          calc_max_filename_len(file);
       }
       

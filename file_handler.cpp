@@ -360,6 +360,7 @@ void list_data_elements(void)
                console->dputsf(L"year %04u: month %u ended at day: %02u\n", 
                   prev_date.year, prev_date.month, prev_date.day);
             }
+            curr_date.day = 1 ;
          }
          //  check for consecutive days within month
          else {

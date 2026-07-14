@@ -296,6 +296,9 @@ static int convert_date(ymd_s &ymd_record, std::wstring &date_str)
 
 //************************************************************************
 // franklin data\*week.csv -l
+//  
+// Effective 07.14.26, this option will also check for continuity of
+// dates in the data set.
 //************************************************************************
 // deduced-args array declaration requires -std=c++17, 
 // but that standard invalidates -wtoi() and swprintf(), which I am using.

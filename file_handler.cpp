@@ -369,11 +369,6 @@ void list_data_elements(void)
                   curr_date.year, curr_date.month, prev_date.day, curr_date.day) ;
             }
          }
-//  we don't detect July 1 and 2 missing...         
-// "Jun 29, 2026",23.7,24.9,0.0,0.0,13.9,15.1,0.0,0.0
-// "Jul 3, 2026",18.5,25.0,0.0,0.0,9.9,16.4,0.0,0.0
-// "Jul 4, 2026",18.7,23.9,0.0,0.0,10.7,15.9,0.0,0.0
-// "Jul 5, 2026",27.3,24.9,0.1,0.0,16.6,14.1,0.0,0.0
          
          prev_date = curr_date ;
       }

@@ -190,16 +190,6 @@ int wmain(int argc, wchar_t *argv[])
       return 1 ;
    }
    console->dputsf(L"%s, %u-bit\n", Version, get_build_size());
-   //  okay, the cause of this, is that apparently I have to use
-   //  double-backslash to put a quote after a backslash...
-   //  But forward slash works fine...
-   // > medialist glock17\"буяновский страйкбол"
-   // arg 1: [glock17"буяновский]
-   // arg 2: [страйкбол]
-   
-   //  unicons derelict cornucopia "буяновский страйкбол"
-   // > medialist glock17\\"буяновский страйкбол"
-   // filespec: D:\SourceCode\Git\media_list\glock17\буяновский страйкбол\*, fcount: 3
    
    int idx ;
    for (idx=1; idx<argc; idx++) {

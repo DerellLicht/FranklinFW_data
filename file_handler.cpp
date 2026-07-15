@@ -317,7 +317,7 @@ void list_data_elements(void)
    console->dputsf(L"number of data elements: %u\n\n", get_data_list_size());
    
    //  show all data entries
-   for(auto &fdtemp : fdlist) {
+   for(auto const &fdtemp : fdlist) {
       console->dputsf(L"%s: H%4.1f S%4.1f BC%4.1f BD%4.1f GI%4.1f GE%4.1f [%5.1f] Gen%4.1f v2l%4.1f\n", 
          fdtemp.date_str.c_str(),
          fdtemp.kWh_home, fdtemp.kWh_solar, fdtemp.kWh_battery_charge, fdtemp.kWh_battery_discharge, 

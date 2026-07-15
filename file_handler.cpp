@@ -303,12 +303,12 @@ static int convert_date(ymd_s &ymd_record, std::wstring const &date_str)
 // deduced-args array declaration requires -std=c++17, 
 // but that standard invalidates -wtoi() and swprintf(), which I am using.
 // so don't worry about that for now; I know what size my array is.
-// std::array month_max_days = {
+// std::array month_max_days = { ... } ;
 
-std::array<int, 13> month_max_days = {
+static std::array<int, 13> month_max_days = {
    0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
    
-std::array<std::wstring, 13> month_names = {
+static std::array<std::wstring, 13> month_names = {
    L"N/A",  L"January", L"February",  L"March",     L"April",   L"May",      L"June",
             L"July",    L"August",    L"September", L"October", L"November", L"December" };
 

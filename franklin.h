@@ -32,9 +32,9 @@ struct ffdata {
 
 //  file_handler.cpp
 void calc_max_filename_len(ffdata const & ftemp);
-int  parse_data_files(ffdata& ftemp);
+int  parse_data_files(ffdata & ftemp);
 uint get_data_list_size(void);
-void list_data_elements(void);
+void list_data_elements(bool validate);
 void list_grid_IO_by_month(void);
 
 

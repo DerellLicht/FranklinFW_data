@@ -170,6 +170,7 @@ static void usage(void)
    console->dputsf(L"If file_path is not specified, current folder will be used\n");
    console->dputsf(L"options:\n");
    console->dputsf(L"  -l - list data elements [default]\n");
+   console->dputsf(L"  -v - validate daily element list - report missing records\n");
    console->dputsf(L"  -g - show grid import/export totals by month\n");
 }
 
@@ -203,6 +204,10 @@ int wmain(int argc, wchar_t *argv[])
             
          case 'g':
             options = 1 ;
+            break ;  
+         
+         case 'v':
+            options = 2 ;
             break ;  
          
          default:
@@ -264,14 +269,17 @@ int wmain(int argc, wchar_t *argv[])
       }
    }  //lint !e681 !e42 !e529
 
+   bool validate_list = false ;
    switch (options) {
    case 1:
       list_grid_IO_by_month();
       break ;
 
+   case 2:
+      validate_list = true ;
    case 0:
    default:
-      list_data_elements();
+      list_data_elements(validate_list);
       break ;
    }
    

@@ -269,17 +269,18 @@ int wmain(int argc, wchar_t *argv[])
       }
    }  //lint !e681 !e42 !e529
 
-   bool validate_list = false ;
    switch (options) {
    case 1:
       list_grid_IO_by_month();
       break ;
 
    case 2:
-      validate_list = true ;
+      validate_data_elements();
+      break ;
+      
    case 0:
    default:
-      list_data_elements(validate_list);
+      list_data_elements();
       break ;
    }
    

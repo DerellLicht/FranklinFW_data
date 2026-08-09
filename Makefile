@@ -12,9 +12,6 @@ USE_STATIC = NO
 #  However, programs built with clang++ will require libc++.dll and libunwind.dll
 #  in order to be used elsewhere 
 #  (unless built with -static, which significantly boosts file size)
-#  That is why the executable files are smaller than TDM ...
-# llvm:  374784 bytes
-# tdm32: 232960 bytes
 ifeq ($(USE_64BIT),YES)
 TOOLS=d:\tdm64\bin
 GNAME=g++

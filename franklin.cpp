@@ -107,7 +107,7 @@ int read_files(TCHAR *filespec)
                             (fdata.nFileSizeHigh * (1ULL<<32)) + fdata.nFileSizeLow,
                              fdata.cFileName,
                             (fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ? true : false);
-      }  //lint !e550  end while()
+      }
 
       //  search for another file
       if (FindNextFile (handle, &fdata) == 0) {

@@ -94,6 +94,9 @@ dist:
 wc:
 	wc -l $(CPPSRC)
 
+clint:
+	cmd /C "python ..\ClaudeLint.py --exclude der_libs"
+	
 cppc:
 	cmd /C "cppcheck --project=compile_commands.json --check-level=exhaustive --enable=all --std=c++14 --suppressions-list=./.suppress.cppcheck"
 

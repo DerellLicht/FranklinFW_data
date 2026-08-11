@@ -7,7 +7,7 @@ USE_CLANG = NO
 # use -static for clang/llvm and cygwin/mingw
 USE_STATIC = NO
 
-include ..\tool_select.mak 
+include der_libs\tool_select.mak 
 
 ifeq ($(USE_DEBUG),YES)
 CFLAGS = -Wall -g -c

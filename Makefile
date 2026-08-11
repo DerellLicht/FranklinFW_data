@@ -7,23 +7,7 @@ USE_CLANG = NO
 # use -static for clang/llvm and cygwin/mingw
 USE_STATIC = NO
 
-#  clang++ vs tdm g++
-#  clang gives *much* clearer compiler error messages...
-#  However, programs built with clang++ will require libc++.dll and libunwind.dll
-#  in order to be used elsewhere 
-#  (unless built with -static, which significantly boosts file size)
-ifeq ($(USE_64BIT),YES)
-TOOLS=d:\tdm64\bin
-GNAME=g++
-else
-ifeq ($(USE_CLANG),YES)
-TOOLS=d:\llvm\bin
-GNAME=clang++
-else
-TOOLS=d:\tdm32\bin
-GNAME=g++
-endif
-endif
+include ..\tool_select.mak 
 
 ifeq ($(USE_DEBUG),YES)
 CFLAGS = -Wall -g -c

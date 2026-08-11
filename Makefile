@@ -18,9 +18,9 @@ LFLAGS = -s -O3
 endif
 CFLAGS += -Weffc++
 CFLAGS += -Wno-write-strings
-ifeq ($(USE_64BIT),YES)
-CFLAGS += -DUSE_64BIT
-endif
+# ifeq ($(USE_64BIT),YES)
+# CFLAGS += -DUSE_64BIT
+# endif
 
 ifeq ($(USE_UNICODE),YES)
 CFLAGS += -DUNICODE -D_UNICODE
@@ -57,11 +57,7 @@ LIBS=-lshlwapi -lcomdlg32
 %.o: %.cpp
 	$(TOOLS)/$(GNAME) $(CFLAGS) $< -o $@
 
-ifeq ($(USE_64BIT),NO)
 BIN = franklin.exe
-else
-BIN = franklin64.exe
-endif
 
 all: $(BIN)
 

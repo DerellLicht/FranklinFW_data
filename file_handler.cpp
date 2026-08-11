@@ -9,7 +9,7 @@
 #include <vector>
 #include <array>
 // #include <wchar.h>
-#ifdef USE_64BIT
+#ifdef _WIN64
 #include <fileapi.h>
 #endif
 

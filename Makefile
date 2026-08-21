@@ -4,8 +4,6 @@ USE_DEBUG = NO
 USE_64BIT = NO
 USE_UNICODE = YES
 USE_CLANG = NO
-# use -static for clang/llvm and cygwin/mingw
-USE_STATIC = NO
 
 include der_libs\tool_select.mak 
 

@@ -81,7 +81,7 @@ int read_files(TCHAR *filespec)
    bool fn_okay ;
    bool done = false;
    while (!done) {
-      if ((fdata.dwFileAttributes & FILE_ATTRIBUTE_VOLID) != 0)
+      if ((fdata.dwFileAttributes & FILE_ATTRIBUTE_VOLID) != 0)   // NOLINT(bugprone-signed-bitwise)
          fn_okay = false;
       else if ((fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != FILE_ATTRIBUTE_DIRECTORY)
          fn_okay = true;
@@ -104,7 +104,7 @@ int read_files(TCHAR *filespec)
          // flist.emplace_back(ffdata_t());
          flist.emplace_back( fdata.dwFileAttributes,
                              fdata.ftCreationTime,
-                            (fdata.nFileSizeHigh * (1ULL<<32)) + fdata.nFileSizeLow,
+                            (fdata.nFileSizeHigh * (1ULL<<32)) + fdata.nFileSizeLow,    // NOLINT(bugprone-signed-bitwise)
                              fdata.cFileName,
                             (fdata.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ? true : false);
       }

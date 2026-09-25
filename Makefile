@@ -26,7 +26,6 @@ endif
 ifeq ($(USE_CLANG),YES)
 CFLAGS += -DUSING_CLANG
 endif
-LiFLAGS += -Ider_libs
 CFLAGS += -Ider_libs
 IFLAGS += -Ider_libs
 
@@ -41,8 +40,6 @@ CPPSRC=franklin.cpp file_handler.cpp \
 der_libs/conio_min.cpp \
 der_libs/common_funcs.cpp \
 der_libs/qualify.cpp 
-
-LINTFILES=lintdefs.cpp lintdefs.ref.h 
 
 OBJS = $(CPPSRC:.cpp=.o)
 
@@ -69,14 +66,11 @@ wc:
 clint:
 	cmd /C "python ..\ClaudeLint.py --exclude der_libs"
 	
-cppc:
-	cmd /C "cppcheck --project=compile_commands.json --check-level=exhaustive --enable=all --std=c++14 --suppressions-list=./.suppress.cppcheck"
-
 check:
 	cmd /C "d:\llvm\bin\clang-tidy.exe $(CPPSRC)"
 
-lint:
-	cmd /C "c:\lint9\lint-nt +v -width(160,4) $(LiFLAGS) -ic:\lint9 mingw.lnt -os(_lint.tmp) $(LINTFILES) $(CPPSRC)"
+cppc:
+	cmd /C "cppcheck --project=compile_commands.json --check-level=exhaustive --enable=all --std=c++14 --suppressions-list=./.suppress.cppcheck"
 
 depend: 
 	makedepend $(IFLAGS) $(CPPSRC)

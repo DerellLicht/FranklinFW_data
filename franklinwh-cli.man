@@ -1,0 +1,49 @@
+D:\SourceCode\Git\FranklinFW_data Yes, Master?? > franklinwh-cli --help
+usage: franklinwh-cli [-h] [--version] [--config PATH] [--email EMAIL] [--password PASS] [--gateway SN] [--installer] [--json]
+                      [--no-color] [-v] [--trace MODULES] [--api-trace] [--log-file PATH]
+                      {status,st,discover,disc,mode,tou,energy,raw,metrics,monitor,mon,accessories,acc,sc,smart-circuits,gen,generator,network,net,diag,diagnostic,bms,battery,support,snapshot,schema,fetch} ...
+
+Command-line interface for the FranklinWH Cloud API.
+
+positional arguments:
+  {status,st,discover,disc,mode,tou,energy,raw,metrics,monitor,mon,accessories,acc,sc,smart-circuits,gen,generator,network,net,diag,diagnostic,bms,battery,support,snapshot,schema,fetch}
+                        Command to execute
+    status (st)         Live system overview (power, SOC, mode, weather, metrics)
+    discover (disc)     Gateway, device, warranty, and accessory enumeration
+    mode                Get or set operating mode
+    tou                 Time-of-Use schedule inspection and control
+    energy              Energy (kWh) and 5-minute power (kW) history — table, JSON or CSV
+    raw                 Direct API method passthrough
+    metrics             Show API call metrics from current session
+    monitor (mon)       Real-time battery dashboard (auto-refresh, Ctrl+C to exit)
+    accessories (acc)   Accessory inventory, status, and device info (Smart Circuits, V2L, Generator)
+    sc (smart-circuits)
+                        Detailed Smart Circuit configuration and control
+    gen (generator)     Generator module configuration and live metrics
+    network (net)       Inspect the aGate's connection, or put it back on WiFi
+    diag (diagnostic)   Diagnostic report — system, auth, device, power, API health
+    bms (battery)       Battery Management System — cell telemetry, pack health, bus topology
+    support (snapshot)  System snapshot for troubleshooting — export, redact, compare
+    schema              Show Current/Totals field schema — Python attr → raw API key mapping
+    fetch               Arbitrary GET/POST to any API endpoint
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit
+
+credentials:
+  --config, -c PATH     Path to franklinwh.ini config file
+  --email, -e EMAIL     FranklinWH account email
+  --password, -p PASS   FranklinWH account password
+  --gateway, -g SN      aGate serial number
+  --installer           Use installer account login (LOGIN_TYPE_INSTALLER). Default: homeowner account
+
+output:
+  --json, -j            Output as JSON
+  --no-color            Disable ANSI colour output
+
+debug:
+  -v, --verbose         Increase verbosity (-v info, -vv debug, -vvv trace)
+  --trace MODULES       Enable debug for specific modules (comma-sep: stats,modes,tou,storm,power,devices,account,client,all)
+  --api-trace           Show per-call API trace with timing
+  --log-file PATH       Write debug output to file

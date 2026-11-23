@@ -2,7 +2,7 @@ set ICLOUD_DRV="D:\images\iCloud Photos\iCloudDrive\Downloads\Images"
 
 @if /I "%~1"=="list" goto :list
 
-copy %ICLOUD_DRV%\data*week.csv data
+copy %ICLOUD_DRV%\data*week.csv .
 del %ICLOUD_DRV%\data*week.csv
    @goto :eof
 
